@@ -1,0 +1,53 @@
+/* This file is: client/src/index.css */
+
+body {
+  /* 1. This applies your new font to the whole app */
+  font-family: 'Poppins', sans-serif;
+
+  /* 2. This adds a beautiful, subtle background */
+  background-color: #f4f7f6;
+  background-image: linear-gradient(180deg, #f4f7f6 0%, #ffffff 100%);
+
+  /* 3. This makes all cards look 'softer' with rounded corners */
+  --bs-card-border-radius: 0.75rem;
+  --bs-card-border-color: #e9ecef;
+  --bs-card-box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+/* This makes the card headers look cleaner */
+.card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+/* This file is: client/src/index.css */
+
+/* ... (your existing body and card-header styles) ... */
+
+/* --- Green Theme Overrides --- */
+
+/* 1. Change the primary button color to green */
+.btn-primary {
+  background-color: #198754; /* A nice Bootstrap green */
+  border-color: #198754; 
+}
+
+/* Make the button slightly darker when hovered/clicked */
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+  background-color: #146c43;
+  border-color: #13653f;
+}
+
+/* 2. Change the Navbar brand color */
+.navbar-light .navbar-brand {
+  color: #198754; /* Green color for the brand */
+  font-weight: 600; /* Make it bolder */
+}
+.navbar-light .navbar-brand:hover {
+  color: #146c43; 
+}
+
+/* 3. Optional: Add a subtle green accent to card headers */
+.card-header {
+  /* Keep the light background, but add a thin green top border */
+  border-top: 3px solid #198754; 
+}
