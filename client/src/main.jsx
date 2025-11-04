@@ -12,6 +12,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx'; // <-- 1. IMPORT THIS
 import TimelinePage from './pages/TimelinePage.jsx';
+import ViewReportPage from './pages/ViewReportPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
         path: '/timeline', 
         element: <TimelinePage />,
       }, // <-- AND THIS COMMA
+      {
+        path: '/view-report/:fileId', // <-- 2. ADD THIS NEW ROUTE
+        element: <ViewReportPage />,
+      },
     ],
   },
 ]);

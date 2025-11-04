@@ -1,52 +1,72 @@
 // This file is: server/routes/ai.routes.js
 
 import express from 'express';
-import { HfInference } from '@huggingface/inference'; // <-- NEW
+// ADD THIS
+import { GoogleGenAI } from "@google/genai"; // <-- This is the new library
+// ... all your other imports
+
+// Initialize Google Gemini
+const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
+// DELETE THE "const model = ..." LINE. IT IS WRONG.
+
 import authMiddleware from '../middleware/auth.middleware.js';
 import File from '../models/File.model.js';
 import AiInsight from '../models/AiInsight.model.js';
 import axios from 'axios';
-
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const pdf = require('pdf-parse');
+ 
+
+
 
 const router = express.Router();
 
 // Initialize Hugging Face
-const hf = new HfInference(process.env.HF_TOKEN);
+
 
 // This is the prompt template for the new AI
+// --- HELPER 2: Get AI Prompt ---
 const getPrompt = (reportText) => {
-  // We will use a model that is good at following instructions
-  return `<s>[INST] You are HealthMate, an AI assistant. You are analyzing the following medical report text:
-  ---
-  ${reportText}
-  ---
-  Provide a clear, kind, and simple analysis. Your response MUST be in this exact JSON format, with no other text before or after the JSON:
-  {
-    "summary": "A simple one-paragraph summary of the report.",
-    "romanUrduSummary": "The same summary, but in Roman Urdu.",
-    "abnormalValues": ["List any abnormal values (e.g., 'WBC high: 11.5', 'Hb low: 9.2')"],
-    "doctorQuestions": ["Suggest 3-5 simple questions the user can ask their doctor."],
-    "foodSuggestions": "Suggest foods to eat or avoid.",
-    "remedySuggestions": "Suggest 1-2 simple home remedies, if applicable."
-  }
-  [/INST]`;
+  // This is the single, combined prompt
+  return `You are HealthMate, an AI assistant. You are analyzing the following medical report text:
+  ---
+  ${reportText}
+  ---
+  Provide a clear, kind, and simple analysis. Your response MUST be in this exact JSON format, with no other text before or after the JSON:
+  {
+    "summary": "A simple one-paragraph summary of the report.",
+    "romanUrduSummary": "The same summary, but in Roman Urdu.",
+    "abnormalValues": ["List any abnormal values (e.g., 'WBC high: 11.5', 'Hb low: 9.2')"],
+    "doctorQuestions": ["Suggest 3-5 simple questions the user can ask their doctor."],
+    "foodSuggestions": "Suggest foods to eat or avoid.",
+    "remedySuggestions": "Suggest 1-2 simple home remedies, if applicable."
+  }`;
 };
 
 // Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// USES 'pdf-to-text' LIBRARY
+// --- HELPER 1: Get Text from PDF Buffer ---
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
+// Helper function to get text from a PDF URL
 const getTextFromPdf = async (url) => {
-  try {
-    const response = await axios.get(url, { responseType: 'arraybuffer' });
-    const data = await pdf(response.data);
-    return data.text;
-  } catch (error) {
-    console.error("Error reading PDF:", error.message);
-    throw new Error("Could not read text from PDF.");
-  }
+  try {
+    const response = await axios.get(url, { responseType: 'arraybuffer' });
+    // This will now work
+    const data = await pdf(response.data); 
+    return data.text;
+  } catch (error) {
+    console.error("Error reading PDF:", error.message);
+    throw new Error("Could not read text from PDF.");
+  }
 };
-
 // @route   POST /api/ai/analyze/:fileId
 // @desc    Analyze an uploaded file using Hugging Face
 // @access  Private
@@ -80,31 +100,42 @@ router.post('/analyze/:fileId', authMiddleware, async (req, res) => {
 
     // 4. Call Hugging Face API
     // We limit the text to 3000 chars to stay within free limits
-    const prompt = getPrompt(reportText.substring(0, 3000)); 
+   // IT SHOULD LOOK LIKE THIS WHEN YOU ARE DONE
+// 4. Call Google Gemini API
+// 4. Call Google Gemini API
+console.log("Text found. Sending to AI...");
+const prompt = getPrompt(reportText.substring(0, 3000));
 
-    const hfResponse = await hf.textGeneration({
-      model: 'HuggingFaceH4/zephyr-7b-beta', // A fast, free, instruction-following model
-      inputs: prompt,
-      parameters: {
-        max_new_tokens: 512, // Max length of the *answer*
-        temperature: 0.3,
-        return_full_text: false, // Only return the AI's answer
-      }
-    });
+// This is the new, correct way to call the API
+const result = await genAI.models.generateContent({
+  model: "models/gemini-2.5-flash", // <-- This is the correct, free model
+  contents: [{ role: "user", parts: [{ text: prompt }] }],
+  generationConfig: {
+    responseMimeType: "application/json",
+    temperature: 0.3,
+  }
+});
 
-    // 5. Clean and parse the JSON response
-    let aiData;
+// 5. Clean and parse the JSON response
+// 5. Clean and parse the JSON response
+    let aiData; // <-- YOU ARE RIGHT, THIS LINE IS NEEDED HERE
     try {
-      // The model *should* only return JSON, but let's clean it
-      const jsonText = hfResponse.generated_text.trim();
+      // THIS IS THE FIX: Get the response object
+      const response = result.response;
+
+      // Get the text from the correct location
+      const jsonText = response.candidates[0].content.parts[0].text;
+
       aiData = JSON.parse(jsonText);
+      console.log("AI analysis successful.");
     } catch (parseError) {
-      console.error('Hugging Face JSON parse error:', parseError, 'Raw text:', hfResponse.generated_text);
+      console.error('Gemini JSON parse error:', parseError, 'Raw text:', result.response);
       return res.status(500).json({ msg: 'Error reading AI response. The AI returned invalid format.' });
     }
 
-    // 6. Save the new insight to our database
-    insight = new AiInsight({
+// 6. Save the new insight to our database
+insight = new AiInsight({
+// ... (the rest of the function stays the same) ...
       user: req.user.id,
       file: file._id,
       summary: aiData.summary,

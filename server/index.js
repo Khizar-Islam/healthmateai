@@ -29,7 +29,7 @@ app.get('/api/test', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
-app.use('/api/vDitals', vitalsRoutes);
+app.use('/api/vitals', vitalsRoutes);
 app.use('/api/files', fileRoutes);
 app.use('/api/ai', aiRoutes); // <-- 2. THIS LINE IS NEW
 app.use('/api/timeline', timelineRoutes);

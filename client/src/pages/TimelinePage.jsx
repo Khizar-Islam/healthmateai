@@ -1,7 +1,7 @@
 // This file is: client/src/pages/TimelinePage.jsx
-
+import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Container, Card, ListGroup, Spinner, Alert } from 'react-bootstrap';
+import { Container, Card, ListGroup, Spinner, Alert, Button } from 'react-bootstrap';
 import Header from '../components/header.jsx'; // Using lowercase 'h'
 import axios from 'axios';
 
@@ -70,9 +70,9 @@ export default function TimelinePage() {
             This file is securely stored.
           </Card.Text>
           {/* This link will view the file in a new tab */}
-          <Button variant="primary" href={item.cloudinaryUrl} target="_blank" rel="noopener noreferrer">
-            View File
-          </Button>
+          <Button as={Link} to={`/view-report/${item._id}`} variant="primary">
+  View Details
+</Button>
           {/* In the next step, we could make this link to our /view-report page */}
         </Card.Body>
       </Card>
