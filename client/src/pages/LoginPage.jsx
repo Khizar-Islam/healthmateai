@@ -31,9 +31,9 @@ export default function LoginPage() {
     try {
       // Send the login data to the backend API
       const res = await axios.post(
-        'http://localhost:5001/api/auth/login', // The login endpoint
-        formData // The data (email, password)
-      );
+  `${import.meta.env.VITE_API_URL}/api/auth/login`, // 1. The URL
+  formData // 2. The data (email, password)
+);
 
       // If login is successful, the server sends back a token
       const { token } = res.data;

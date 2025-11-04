@@ -24,7 +24,7 @@ export default function ViewReportPage() {
           headers: { Authorization: `Bearer ${token}` },
         };
         
-        const res = await axios.get(`http://localhost:5001/api/files/${fileId}`, config);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/files/${fileId}`, config);
         setFile(res.data);
       } catch (err) {
         setError('Failed to load file. It may not exist or you may not have permission.');

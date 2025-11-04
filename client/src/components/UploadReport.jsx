@@ -52,11 +52,11 @@ export default function UploadReport() {
       };
 
       // --- STEP 1: UPLOAD THE FILE ---
-      const uploadRes = await axios.post(
-        'http://localhost:5001/api/files/upload',
-        formData,
-        config
-      );
+     const uploadRes = await axios.post(
+  `${import.meta.env.VITE_API_URL}/api/files/upload`,
+  formData,
+  config
+);
 
       setSuccess('Upload complete! Starting AI analysis...');
       setIsAnalyzing(true); // <-- Show analyzing message
@@ -74,10 +74,10 @@ export default function UploadReport() {
 
       // Call our new AI endpoint
       const aiRes = await axios.post(
-        `http://localhost:5001/api/ai/analyze/${newFileId}`,
-        null, // No POST body needed
-        authConfig
-      );
+  `${import.meta.env.VITE_API_URL}/api/ai/analyze/${newFileId}`,
+  null, // No POST body needed
+  authConfig
+);
 
       // --- STEP 3: ALL DONE ---
       setSuccess('File uploaded and analyzed successfully!');

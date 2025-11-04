@@ -51,11 +51,7 @@ export default function AddVitalsForm() {
       };
 
       // 3. Send the data to the backend
-      const res = await axios.post(
-        'http://localhost:5001/api/vitals', // Our new vitals endpoint
-        vitals, // The form data
-        config // The config with the auth token
-      );
+     const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/vitals`, vitals, config);
 
       // 4. Handle success
       setSuccess('Vitals added successfully!');

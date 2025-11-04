@@ -33,9 +33,9 @@ export default function RegisterPage() {
     try {
       // Send the formData to the backend API
       const res = await axios.post(
-        'http://localhost:5001/api/auth/register', // Our backend URL
-        formData // The data we're sending (username, email, password)
-      );
+  `${import.meta.env.VITE_API_URL}/api/auth/login`, // 1. The URL
+  formData // 2. The data (email, password)
+);
 
       // If registration is successful:
       console.log('User registered:', res.data); // Log the response (includes the token)

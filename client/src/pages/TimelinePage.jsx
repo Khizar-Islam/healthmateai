@@ -18,7 +18,7 @@ export default function TimelinePage() {
           headers: { Authorization: `Bearer ${token}` },
         };
 
-        const res = await axios.get('http://localhost:5001/api/timeline', config);
+       const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/timeline`, config);
         setTimeline(res.data);
       } catch (err) {
         setError('Failed to load timeline. Please try again.');
