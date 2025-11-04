@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Header from '../components/header.jsx'; // Using lowercase 'h'
+import Header from '../components/Header.jsx'; // Using lowercase 'h'
 import AddVitalsForm from '../components/AddVitalsForm.jsx';
 import UploadReport from '../components/UploadReport.jsx'; // <-- 1. IMPORT
 

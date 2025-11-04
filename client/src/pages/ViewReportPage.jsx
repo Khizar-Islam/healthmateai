@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Spinner, Alert, Card, Button } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../components/header.jsx'; // Using lowercase 'h'
+import Header from '../components/Header.jsx'; // Using lowercase 'h'
 
 export default function ViewReportPage() {
   const [file, setFile] = useState(null);

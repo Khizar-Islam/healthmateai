@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { Container, Card, ListGroup, Spinner, Alert, Button } from 'react-bootstrap';
-import Header from '../components/header.jsx'; // Using lowercase 'h'
+import Header from '../components/Header.jsx'; // Using lowercase 'h'
 import axios from 'axios';
 
 export default function TimelinePage() {
